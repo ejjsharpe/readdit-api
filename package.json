@@ -2,12 +2,13 @@
   "name": "reddit-clone",
   "version": "1.0.0",
   "description": "a clone of the popular website reddit",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "jest --watch",
     "setup-dbs": "psql -f db/setup.sql",
     "migrate": "knex migrate:make",
-    "seed": "knex seed:run"
+    "seed": "knex seed:run",
+    "dev": "nodemon listen.js"
   },
   "repository": {
     "type": "git",
@@ -20,8 +21,13 @@
   },
   "homepage": "https://github.com/EJJSharpe/reddit-clone#readme",
   "dependencies": {
+    "express": "^4.17.1",
     "knex": "^0.21.14",
     "knex-migrate": "^1.7.4",
     "pg": "^8.5.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6",
+    "supertest": "^6.0.1"
   }
 }
