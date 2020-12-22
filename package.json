@@ -1,0 +1,27 @@
+{
+  "name": "reddit-clone",
+  "version": "1.0.0",
+  "description": "a clone of the popular website reddit",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --watch",
+    "setup-dbs": "psql -f db/setup.sql",
+    "migrate": "knex migrate:make",
+    "seed": "knex seed:run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EJJSharpe/reddit-clone.git"
+  },
+  "author": "Elliot Sharpe",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EJJSharpe/reddit-clone/issues"
+  },
+  "homepage": "https://github.com/EJJSharpe/reddit-clone#readme",
+  "dependencies": {
+    "knex": "^0.21.14",
+    "knex-migrate": "^1.7.4",
+    "pg": "^8.5.1"
+  }
+}
