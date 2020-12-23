@@ -1,9 +1,9 @@
-const { fetchArticles, fetchArticleByID, updateArticleByID, eraseArticleByID } = require('../models/articles')
+const { fetchArticles, fetchArticleByID, updateArticleByID, eraseArticleByID, insertArticle } = require('../models/articles')
 
 
 exports.getArticles = async (req, res, next) => {
     try {
-        const articles = await fetchArticles()
+        const articles = await fetchArticles(req.query)
         res.status(200).send({ articles })
     } catch (err) {
         next(err)
@@ -40,3 +40,13 @@ exports.deleteArticleByID = async (req, res, next) => {
         next(err)
     }
 }
+
+exports.postArticle = async (req, res, next) => {
+    const articleToPost = req.body;
+    try {
+        const article = await insertArticle(articleToPost)
+        res.status(201).send({ article })
+    } catch (err) {
+    }
+}
+

@@ -1,14 +1,23 @@
 const connection = require('../db/connection')
 
-exports.fetchArticles = async () => {
-    const articlesRows = await connection
+exports.fetchArticles = async ({ sort_by, order, author, topic }) => {
+    const articles = await connection
         .select('*')
         .from('articles')
+        .orderBy(sort_by || 'created_at', order || 'desc')
+        .modify(query => {
+            if (author) {
+                query.where('author', '=', author)
+            }
+            if (topic) {
+                query.where('topic', '=', topic)
+            }
+        })
 
-    if (articlesRows.length === 0) {
+    if (articles.length === 0) {
         return Promise.reject({ status: 404, msg: 'Not found' })
     }
-    return articlesRows
+    return articles;
 }
 
 exports.fetchArticleByID = async (articleID) => {
@@ -46,4 +55,12 @@ exports.eraseArticleByID = async (articleID) => {
         return Promise.reject({ status: 404, msg: 'Not found' })
     }
     return `"${title[0]}" was deleted`
+}
+
+exports.insertArticle = async (article) => {
+    const postedArticle = await connection
+        .insert(article)
+        .into('articles')
+        .returning('*')
+    return postedArticle[0]
 }

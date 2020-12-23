@@ -45,6 +45,43 @@ describe('app', () => {
             expect(body.articles.length).toBe(12)
         });
 
+        test('GET - 200 - defaults to sort_by=created at and order=desc', async () => {
+            const { body } = await request(app)
+                .get('/api/articles')
+                .expect(200)
+            expect(body.articles).toBeSortedBy('created_at', { descending: true })
+        });
+
+        test('GET - 200 - accepts query for sort_by', async () => {
+            const { body } = await request(app)
+                .get('/api/articles?sort_by=author')
+                .expect(200)
+            expect(body.articles).toBeSortedBy('author', { descending: true })
+        });
+
+        test('GET - 200 - accepts query for order', async () => {
+            const { body } = await request(app)
+                .get('/api/articles?order=asc')
+                .expect(200)
+            expect(body.articles).toBeSortedBy('created_at', { ascending: true })
+        });
+
+        test('POST - 201 - responds with created article and success message', async () => {
+            const articleToPost = {
+                title: 'The Life and Times of Mittens',
+                topic: 'cats',
+                author: 'butter_bridge',
+                body: 'meow',
+                votes: 100
+            }
+            const { body } = await request(app)
+                .post('/api/articles')
+                .send(articleToPost)
+                .expect(201)
+            expect(Object.keys(body.article)).toEqual(expect.arrayContaining(['title', 'topic', 'author', 'body', 'created_at', 'votes']))
+            expect(body.article.title).toBe('The Life and Times of Mittens')
+        })
+
 
     });
 
@@ -80,12 +117,49 @@ describe('app', () => {
     });
 
     describe('/articles/:article_id/comments', () => {
-        test.only('GET - 200 - gets all comments for the article given by article ID', async () => {
+        test('GET - 200 - gets all comments for the article given by article ID', async () => {
             const { body } = await request(app)
                 .get('/api/articles/1/comments')
                 .expect(200)
             expect(body.comments[0].article_id).toBe(1)
             expect(Object.keys(body.comments[0])).toEqual(expect.arrayContaining(['comment_id', 'author', 'article_id', 'votes', 'created_at', 'body']))
         });
+
+        test('GET - 200 - defaults to sorted_by=created_at and order=descending', async () => {
+            const { body } = await request(app)
+                .get('/api/articles/1/comments')
+                .expect(200)
+            expect(body.comments).toBeSortedBy('created_at', { descending: true })
+        });
+
+        test('GET - 200 - accepts query for sort_by', async () => {
+            const { body } = await request(app)
+                .get('/api/articles/1/comments?sort_by=votes')
+                .expect(200)
+            expect(body.comments[0].article_id).toBe(1)
+            expect(Object.keys(body.comments[0])).toEqual(expect.arrayContaining(['comment_id', 'author', 'article_id', 'votes', 'created_at', 'body']))
+            expect(body.comments).toBeSortedBy('votes', { descending: true })
+        });
+
+        test('GET - 200 - accepts query for order', async () => {
+            const { body } = await request(app)
+                .get('/api/articles/1/comments?order=asc')
+                .expect(200)
+            expect(body.comments[0].article_id).toBe(1)
+            expect(Object.keys(body.comments[0])).toEqual(expect.arrayContaining(['comment_id', 'author', 'article_id', 'votes', 'created_at', 'body']))
+            expect(body.comments).toBeSortedBy('created_at', { ascending: true })
+        });
+
+        test('POST - 201 - creates comment for the article with corresponding articleID', async () => {
+            const { body } = await request(app)
+                .post('/api/articles/2/comments')
+                .send({ username: 'butter_bridge', body: 'great read!' })
+                .expect(201)
+            expect(body.comment.body).toBe('great read!')
+            expect(body.comment.article_id).toBe(2)
+            expect(body.comment.created_at).not.toBe(null)
+            expect(body.comment.author).toBe('butter_bridge')
+
+        })
     });
 });

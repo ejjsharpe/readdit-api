@@ -8,3 +8,11 @@ exports.fetchCommentsByArticleID = async (article_id, order, sort_by) => {
         .orderBy(sort_by || 'created_at', order || 'desc')
     return comments;
 }
+
+exports.insertCommentByArticleID = async (comment) => {
+    const addedComment = await connection
+        .insert(comment)
+        .into('comments')
+        .returning('*')
+    return addedComment[0]
+}
