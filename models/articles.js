@@ -46,5 +46,4 @@ exports.eraseArticleByID = async (articleID) => {
         return Promise.reject({ status: 404, msg: 'Not found' })
     }
     return `"${title[0]}" was deleted`
-
 }

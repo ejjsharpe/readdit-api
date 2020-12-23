@@ -7,7 +7,21 @@ describe('app', () => {
     beforeEach(() => connection.seed.run())
     afterAll(() => connection.destroy())
 
+    describe('users/:username', () => {
+        test('GET - 200 - responds user data corresponding to username', async () => {
+            const expectedUser = {
+                username: 'lurker',
+                name: 'do_nothing',
+                avatar_url:
+                    'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png',
+            }
 
+            const { body } = await request(app)
+                .get('/api/users/lurker')
+                .expect(200)
+            expect(body.user).toEqual(expectedUser)
+        });
+    });
 
     describe('/topics', () => {
         test('GET - 200 - responds with all topics', async () => {
@@ -33,7 +47,6 @@ describe('app', () => {
 
 
     });
-
 
     describe('/articles/:article_id', () => {
         test('GET - 200 - responds with article corresponding to article ID given', async () => {
@@ -66,5 +79,13 @@ describe('app', () => {
         })
     });
 
-
+    describe('/articles/:article_id/comments', () => {
+        test.only('GET - 200 - gets all comments for the article given by article ID', async () => {
+            const { body } = await request(app)
+                .get('/api/articles/1/comments')
+                .expect(200)
+            expect(body.comments[0].article_id).toBe(1)
+            expect(Object.keys(body.comments[0])).toEqual(expect.arrayContaining(['comment_id', 'author', 'article_id', 'votes', 'created_at', 'body']))
+        });
+    });
 });

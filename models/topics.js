@@ -1,10 +1,8 @@
 const connection = require('../db/connection')
 
-exports.fetchTopics = () => {
-    return connection
+exports.fetchTopics = async () => {
+    const topicsRows = await connection
         .select('*')
         .from('topics')
-        .then(topicsRows => {
-            return topicsRows
-        })
+    return topicsRows
 }
