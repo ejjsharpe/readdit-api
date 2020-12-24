@@ -4,7 +4,7 @@ module.exports = [
       "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
     belongs_to: "They're not exactly dogs, are they?",
     created_by: 'butter_bridge',
-    votes: 16,
+    votes: 20,
     created_at: 1511354163389,
   },
   {

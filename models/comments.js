@@ -16,3 +16,24 @@ exports.insertCommentByArticleID = async (comment) => {
         .returning('*')
     return addedComment[0]
 }
+
+exports.updateCommentById = async (comment_id, inc_votes) => {
+    const comment = await connection('comments')
+        .where({ comment_id })
+        .increment('votes', inc_votes || 0)
+        .returning('*');
+    if (!comment) {
+        return Promise.reject({ status: 404, msg: 'Not found' });
+    }
+    return comment[0];
+};
+
+exports.eraseCommentByID = async (comment_id) => {
+    const deletedComment = await connection
+        .from('comments')
+        .where({ comment_id })
+        .delete('*')
+    if (deletedComment.length === 0) {
+        return Promise.reject({ status: 404, msg: 'Not found' })
+    }
+}

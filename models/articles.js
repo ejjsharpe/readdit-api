@@ -6,14 +6,9 @@ exports.fetchArticles = async ({ sort_by, order, author, topic }) => {
         .from('articles')
         .orderBy(sort_by || 'created_at', order || 'desc')
         .modify(query => {
-            if (author) {
-                query.where('author', '=', author)
-            }
-            if (topic) {
-                query.where('topic', '=', topic)
-            }
+            if (author) query.where('author', '=', author)
+            if (topic) query.where('topic', '=', topic)
         })
-
     if (articles.length === 0) {
         return Promise.reject({ status: 404, msg: 'Not found' })
     }

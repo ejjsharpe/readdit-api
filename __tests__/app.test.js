@@ -162,4 +162,20 @@ describe('app', () => {
 
         })
     });
+
+    describe('/comments/:comment_id', () => {
+        test('PATCH - 202 - can alter votes prop by the inc_votes value given', async () => {
+            const { body } = await request(app)
+                .patch('/api/comments/1')
+                .send({ inc_votes: -20 })
+                .expect(202)
+            expect(body.comment.votes).toBe(0)
+        });
+
+        test('DELETE - 204 - deletes property and returng deletion success message', async () => {
+            await request(app)
+                .delete('/api/comments/1')
+                .expect(204)
+        });
+    });
 });
