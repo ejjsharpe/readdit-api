@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/EJJSharpe/reddit-clone#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "knex": "^0.21.14",
     "knex-migrate": "^1.7.4",
