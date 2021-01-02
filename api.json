@@ -1,0 +1,26 @@
+{
+    "reddit-clone-api": {
+        "GET": [
+            "/api/users",
+            "/api/users/:username",
+            "/api/topics",
+            "/api/articles",
+            "/api/articles/:article_id",
+            "/api/articles/:article_id/comments"
+        ],
+        "PATCH": [
+            "/api/articles/:article_id",
+            "/api/comments/:comment_id"
+        ],
+        "POST": [
+            "/api/topics",
+            "/api/articles",
+            "/api/users",
+            "/api/articles/:article_id/comments"
+        ],
+        "DELETE": [
+            "/articles/:article_id",
+            "/comments/:comment_id"
+        ]
+    }
+}

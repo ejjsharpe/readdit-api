@@ -7,7 +7,7 @@ exports.up = function (knex) {
         articles.integer('votes').defaultTo(0);
         articles.text('topic').references('topics.slug');
         articles.timestamp('created_at');
-        articles.text('author').references('users.username')
+        articles.text('author').references('users.username');
     })
 };
 

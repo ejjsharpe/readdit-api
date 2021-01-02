@@ -1,16 +1,19 @@
 const express = require('express');
 const apiRouter = require('./routes/api');
-const { handleCustomErrors } = require('./controllers/errors')
+const { handleCustomErrors, handlePSQLErrors, handle500, routeNotFound } = require('./controllers/errors')
 const app = express()
 
 app.use(express.json())
 
 //ROUTES
 app.use('/api', apiRouter)
+app.all('/*', routeNotFound);
 
 
 //ERRORS HANDLERS
 app.use(handleCustomErrors)
+app.use(handlePSQLErrors)
+app.use(handle500);
 
 
 
