@@ -147,6 +147,13 @@ describe('app', () => {
             expect(body.articles).toBeSortedBy('created_at', { ascending: true })
         });
 
+        test('GET - 200 - accepts limit query', async () => {
+            const { body } = await request(app)
+                .get('/api/articles?limit=5')
+                .expect(200)
+            expect(body.articles.length).toBe(5)
+        });
+
         test('GET - 400 - when invalid sort_by query is given', async () => {
             const { body } = await request(app)
                 .get('/api/articles?sort_by=sausages')

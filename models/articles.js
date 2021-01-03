@@ -1,9 +1,10 @@
 const connection = require('../db/connection')
 
-exports.fetchArticles = async ({ sort_by, order, author, topic }) => {
+exports.fetchArticles = async ({ sort_by, order, author, topic, limit }) => {
     const articles = await connection
         .select('*')
         .from('articles')
+        .limit(limit || 100)
         .orderBy(sort_by || 'created_at', order || 'desc')
         .modify(query => {
             if (author) query.where('author', '=', author)
