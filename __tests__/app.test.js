@@ -168,20 +168,23 @@ describe('app', () => {
             expect(body.articles).toBeSortedBy('created_at', { ascending: true })
         });
 
-        test('POST - 201 - responds with created article and success message', async () => {
+        test.only('POST - 201 - responds with created article and success message', async () => {
             const articleToPost = {
                 title: 'The Life and Times of Mittens',
                 topic: 'cats',
                 author: 'butter_bridge',
                 body: 'meow',
-                votes: 100
+                votes: 100,
+                created_at: new Date()
+
             }
             const { body } = await request(app)
                 .post('/api/articles')
                 .send(articleToPost)
                 .expect(201)
-            expect(Object.keys(body.article)).toEqual(expect.arrayContaining(['title', 'topic', 'author', 'body', 'created_at', 'votes']))
+            expect(Object.keys(body.article)).toEqual(expect.arrayContaining(['title', 'topic', 'author', 'body', 'created_at', 'votes', 'article_id']))
             expect(body.article.title).toBe('The Life and Times of Mittens')
+            console.log(body.article)
         })
 
 
